@@ -18,7 +18,7 @@ cd /home/mila/m/manoosh.samiei/scratch/The-Bayesian-Behavior-Framework
 export LD_LIBRARY_PATH=~/scratch/The-Bayesian-Behavior-Framework/lib:$LD_LIBRARY_PATH
 source /home/mila/m/manoosh.samiei/scratch/The-Bayesian-Behavior-Framework/bayes3.8/bin/activate
 
-CUDA_VISIBLE_DEVICES=0 python /home/mila/m/manoosh.samiei/scratch/The-Bayesian-Behavior-Framework/run_habitization_experiment.py --seed 42 --verbose 1 --gui 0 --savepath './sac_data' --details_savepath='./sac_details'
+CUDA_VISIBLE_DEVICES=0 python /home/mila/m/manoosh.samiei/scratch/The-Bayesian-Behavior-Framework/run_habitization_experiment.py --seed 42 --verbose 1 --gui 0 --savepath './data_h2/' --details_savepath='./details_h2/' --only_sac='False'
 
 
 

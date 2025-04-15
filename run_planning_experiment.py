@@ -32,7 +32,7 @@ parser.add_argument('--beta_z', type=float, default=0.1, help="coefficient of lo
 
 # ----------- RL hyper-parameters -----------
 parser.add_argument('--step_start', type=int, default=100000, help="steps starting training")
-
+parser.add_argument('--only_sac', type=str, default='False', help="only sac without adding the free energy loss")
 # ==================== arg parse & hyper-parameter setting ==================
 parser.add_argument('--savepath', type=str, default='./data/', help="save path")
 parser.add_argument('--details_savepath', type=str, default='./details/', help="details save path")
@@ -87,7 +87,7 @@ def run_trial(seed):
 
     # =============================== Hyperparameters ================================
     verbose = args.verbose
-
+    only_sac = args.only_sac
     rl_config = {"algorithm": "sac",
                  "gamma": 0.9,
                  "target_entropy": 0}
@@ -116,6 +116,7 @@ def run_trial(seed):
                                   action_size=action_size,
                                   beta_z=args.beta_z,
                                   rl_config=rl_config,
+                                  only_sac=only_sac,
                                   record_final_z_q=args.record_final_z_q,
                                   device=device)
 
@@ -136,7 +137,7 @@ def run_trial(seed):
     aif_iterations = []
     sig_priors = []
     sig_posts = []
-    loss_all = []
+    loss_fe_all = []
     loss_v_all = []
     loss_q_all = []
     loss_a_all = []
@@ -206,7 +207,7 @@ def run_trial(seed):
             if global_step > step_start and global_step <= step_end and global_step % train_interval == 0:
                 agent.learn(buffer) # training
                 loss, loss_v, loss_q, loss_a, kld, logp_x = agent.record_loss(buffer)  # only for recording loss, no training, computed on latest experience
-                loss_all.append(loss)
+                loss_fe_all.append(loss)
                 loss_v_all.append(loss_v)
                 loss_q_all.append(loss_q)
                 loss_a_all.append(loss_a)
@@ -267,7 +268,7 @@ def run_trial(seed):
             "aif_iterations": np.array(aif_iterations),
             "sig_priors": np.array(sig_priors),
             "sig_posts": np.array(sig_posts),
-            "loss_all": np.array(loss_all),
+            "loss_fe_all": np.array(loss_fe_all),
             "loss_v_all": np.array(loss_v_all),
             "loss_q_all": np.array(loss_q_all),
             "loss_a_all": np.array(loss_a_all),

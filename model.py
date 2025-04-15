@@ -26,6 +26,7 @@ class BayesianBehaviorAgent(nn.Module):
                  beta_z=0.1,
                  decision_precision_threshold=0.05,
                  max_iterations=16,
+                 only_sac='False',
                  rl_config=None,
                  record_final_z_q=False,
                  device=None) -> None:
@@ -447,7 +448,7 @@ class BayesianBehaviorAgent(nn.Module):
         logp_x_batch = self.compute_logp(mux_pred[:, :3], x_batch[:, :-1].reshape([-1, *self.input_size]))
         logp_x_batch += self.compute_logp(mux_pred[:, -3:], xg_batch.reshape([-1, *self.input_size]))
         loss_batch = (self.beta_z * kld_batch - logp_x_batch) * mask_batch.reshape([-1]) # free energy loss
-        loss = loss_batch.mean()
+        loss_fe = loss_batch.mean()
 
         kld = (kld_batch * mask_batch.reshape([-1])).mean()
         logp_x = (logp_x_batch * mask_batch.reshape([-1])).mean()
@@ -511,7 +512,7 @@ class BayesianBehaviorAgent(nn.Module):
 
         loss_critic = loss_q + loss_v
 
-        loss = loss + loss_critic
+        #         loss = loss_critic
 
         # ----- loss_a --------
 
@@ -542,8 +543,12 @@ class BayesianBehaviorAgent(nn.Module):
             + torch.mean(torch.mean((mua_tensor * mask_batch.repeat_interleave(
                 mua_tensor.size()[-1], dim=-1)).pow(2), dim=[1, 2])))
 
-        loss = loss + self.a_coef * loss_a
+        loss_action = self.a_coef * loss_a
 
+        if only_sac == 'False':
+            loss = loss_fe + loss_critic + loss_action
+        elif only_sac == 'True':
+            loss = loss_critic + loss_action
         self.zero_grad()
         loss.backward()
         self.optimizer.step()
@@ -616,7 +621,7 @@ class BayesianBehaviorAgent(nn.Module):
             logp_x_batch = self.compute_logp(mux_pred[:, :3], x_batch[:, :-1].reshape([-1, *self.input_size]))
             logp_x_batch += self.compute_logp(mux_pred[:, -3:], xg_batch.reshape([-1, *self.input_size]))
             loss_batch = (self.beta_z * kld_batch - logp_x_batch) * mask_batch.reshape([-1]) # free energy loss
-            loss = loss_batch.mean()
+            loss_fe = loss_batch.mean()
 
             kld = (kld_batch * mask_batch.reshape([-1])).mean()
             logp_x = (logp_x_batch * mask_batch.reshape([-1])).mean()
@@ -707,7 +712,7 @@ class BayesianBehaviorAgent(nn.Module):
                 + torch.mean(torch.mean((mua_tensor * mask_batch.repeat_interleave(
                     mua_tensor.size()[-1], dim=-1)).pow(2), dim=[1, 2])))
 
-        return loss.item(), loss_v.item(), loss_q.item(), loss_a.item(), kld.item(), logp_x.item()
+        return loss_fe.item(), loss_v.item(), loss_q.item(), loss_a.item(), kld.item(), logp_x.item()
 
     def init_recording_variables(self):
         self.model_h_series = []
