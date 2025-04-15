@@ -34,11 +34,14 @@ parser.add_argument('--beta_z', type=float, default=0.1, help="coefficient of lo
 parser.add_argument('--step_start', type=int, default=100000, help="steps starting training")
 
 # ==================== arg parse & hyper-parameter setting ==================
-savepath = './data/'
-details_savepath = './details/'
-planning_savepath = './planning/'
+parser.add_argument('--savepath', type=str, default='./data/', help="save path")
+parser.add_argument('--details_savepath', type=str, default='./details/', help="details save path")
+parser.add_argument('--planning_savepath', type=str, default='./planning/', help="planning save path")
 
 args = parser.parse_args()
+savepath = args.savepath
+details_savepath = args.details_savepath
+planning_savepath = args.planning_savepath
 
 
 def run_trial(seed):
