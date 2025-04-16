@@ -318,4 +318,3 @@ if __name__ == "__main__":
             process.join()
     else:
         raise ValueError('n_seed must be a positive integer')
-

@@ -32,6 +32,7 @@ class BayesianBehaviorAgent(nn.Module):
                  device=None) -> None:
         super().__init__()
 
+        self.only_sac = only_sac
         self.input_size = input_size
         self.h_size = h_size
         self.z_size = z_size
@@ -545,9 +546,9 @@ class BayesianBehaviorAgent(nn.Module):
 
         loss_action = self.a_coef * loss_a
 
-        if only_sac == 'False':
+        if self.only_sac == 'False':
             loss = loss_fe + loss_critic + loss_action
-        elif only_sac == 'True':
+        elif self.only_sac == 'True':
             loss = loss_critic + loss_action
         self.zero_grad()
         loss.backward()
