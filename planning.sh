@@ -19,4 +19,3 @@ export LD_LIBRARY_PATH=~/scratch/The-Bayesian-Behavior-Framework/lib:$LD_LIBRARY
 source /home/mila/m/manoosh.samiei/scratch/The-Bayesian-Behavior-Framework/bayes3.8/bin/activate
 
 CUDA_VISIBLE_DEVICES=0,1 python /home/mila/m/manoosh.samiei/scratch/The-Bayesian-Behavior-Framework/run_planning_experiment.py --seed 12 --verbose 1 --gui 0 --savepath './data/' --details_savepath='./details/' --planning_savepath='./planning/' --only_sac='False'
-
