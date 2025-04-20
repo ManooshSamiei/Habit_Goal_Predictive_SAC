@@ -73,6 +73,7 @@ def run_trial(seed):
     logging.info("Job-name-is-{}".format(os.getenv('AMLT_JOB_NAME')))
 
     from env.tmaze import TMazeEnv
+    #from env.tmaze_hazard import TMazeEnv
 
     PyBulletClientMode = 'GUI' if args.gui else 'DIRECT'
     env = TMazeEnv(mode=PyBulletClientMode, obs='vision', seed=seed, reward_scales=reward_scales_left)
