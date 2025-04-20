@@ -46,7 +46,7 @@ function fig2_habitization_analysis(dataPath)
     
         sig_priors = reshape(mean(double(data.sig_priors), 3), 1, []);
         sig_priors = sig_priors(100001:max_all_steps);
-        sig_priors = hold_peaks(sig_priors, 10000, 1);  % Hold for 50 ms at 1000 Hz
+        sig_priors = hold_peaks(sig_priors, 1, 1000);  % Hold for 50 ms at 1000 Hz
         % Apply Gaussian smoothing
         sigma_prior(:, count) = reshape(smoothdata(sig_priors, 'gaussian', 1000), 1, []);
         sig_posts =  reshape(mean(double(data.sig_posts), 3), 1, []);

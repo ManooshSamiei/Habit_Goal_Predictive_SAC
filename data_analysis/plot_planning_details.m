@@ -10,7 +10,7 @@ plot_colors = {hsv2rgb([0.15, 0, 0.3]), ...
                         };
 
 
-id = 7;  % can change to see different agents
+id = 12;  % can change to see different agents
 
 
 fig =figure;
@@ -119,7 +119,7 @@ for goal_id = -1:4
     count = 0;
 
 
-    for id = 0 : 11
+    for id = 12 %0 : 11
         for k = 0 : N-1
             
             filename = sprintf("tmaze_planning_%d_goal_%d_episode_%d.mat", id, goal_id, k);

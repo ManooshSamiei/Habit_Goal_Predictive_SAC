@@ -1,7 +1,7 @@
 function fig_ratio = plot_diversity_statistics(dataPath)
 
 N = 60; 
-n_seeds = 12;
+n_seeds = 1;
 
 fig_ratio=figure;
 set(gcf, 'Position', [400, 200, 400, 400]);
@@ -18,7 +18,7 @@ n_right = zeros(n_seeds, 1);
 n_fail = zeros(n_seeds, 1);
 steps_taken = zeros(n_seeds, N);
 
-for id = 0 : n_seeds -1
+for id = 42 
 
     count = 1;
 

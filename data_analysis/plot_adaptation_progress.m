@@ -9,11 +9,10 @@ if ~exist("details_dir", 'var')
 end
 
 
-id = 7;
+id = 12;
 
-N = 10; 
-
-episodes = [0, 2000, 5000, 10000];
+episodes = 0:2000:19500;%, 5000, 15000, 20000, 25000, 27500, 30000, 37000];
+N = length(episodes)
 
 % ----------------------------------------------
 
@@ -29,20 +28,20 @@ for stp = episodes
     
     draw_tmaze;
     
-    for k = 0: 100 : 100 * (N - 1)
-        
-        filename = sprintf("tmaze_planning_%d_episode_%d.mat", id, stp+k);
+    % for k = 0: 100 : 100 * (N - 1)
+    % 
+    filename = sprintf("tmaze_planning_%d_episode_%d.mat", id, stp);
 
-        data = load(strcat(details_dir,  filename));
+    data = load(strcat(details_dir,  filename));
 
-        hold on
-        e_len = size(data.info,1);
+    hold on
+    e_len = size(data.info,1);
 
-        x_traj = data.info(1:e_len,1);
-        y_traj = data.info(1:e_len,2);
+    x_traj = data.info(1:e_len,1);
+    y_traj = data.info(1:e_len,2);
 
 
-        quiverDQ(x_traj, y_traj, 0.4, 0.8, hsv2rgb([0.4, 0.0, 0.7]))
+    quiverDQ(x_traj, y_traj, 0.4, 0.8, hsv2rgb([0.4, 0.0, 0.7]))
 %         plot([x_traj(1)], [y_traj(1)], 'o', 'color', hsv2rgb([0.4, 0.0, 0.2]), 'markersize', 5, 'MarkerFaceColor',hsv2rgb([0.4, 0.0, 0.2]))
 
 
@@ -51,7 +50,7 @@ for stp = episodes
 %         plot([x_traj(1)], [y_traj(1)], 'o', 'color', hsv2rgb([0.4, 0.0, 0.6]), 'markersize', 5, 'MarkerFaceColor',hsv2rgb([0.4, 0.0, 0.2]))
 
 
-    end
+    % end
 
 
 %     title(['episode ', num2str(stp)])
